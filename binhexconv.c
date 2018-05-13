@@ -39,7 +39,7 @@ for little endian (or big endian with correct length)
 
 -----------------------------------------------*/
 
-#include binhexconv.h
+#include "binhexconv.h"
 
 void b2ah (char * str, void * bin , int size) {
 	unsigned char tmp, b;
