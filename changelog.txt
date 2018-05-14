@@ -1,0 +1,11 @@
+
+0.0.3
+- fixed bad declaration
+- smaller code
+
+0.0.2
+- new function: sah2b
+
+0.0.1
+- start
+- new function: b2ah ah2b
