@@ -41,7 +41,11 @@ for little endian (or big endian with correct length)
 
 #include "binhexconv.h"
 
-void b2ah (char * str, void * bin , int size) {
+#if SIZCHAR==0
+void b2ah (char * str, void * bin , unsigned int size) {
+#else
+void b2ah (char * str, void * bin , unsigned char size) {
+#endif
 	unsigned char tmp, b;
 	unsigned char * lb = bin;
 	
@@ -63,6 +67,13 @@ void b2ah (char * str, void * bin , int size) {
  read ascii number with end of string
 -----------------------------------------------*/
 
+static inline unsigned char hashexdigit ( unsigned char tmp2 ) {
+	if ( ( tmp2 >= '0' ) && ( tmp2 <= '9' ) ) return tmp2 - ('0'-1);
+	if ( ( tmp2 >= 'a' ) && ( tmp2 <= 'f' ) ) return tmp2 - ('a'-11);
+	if ( ( tmp2 >= 'A' ) && ( tmp2 <= 'F' ) ) return tmp2 - ('A'-11);
+	return 0;
+}
+
 #if SIZCHAR==0
 void ah2b ( void * bin, char * str, unsigned int size ) {
 #else
@@ -78,27 +89,20 @@ void ah2b ( void * bin, char * str, unsigned char size ) {
 		++str;
 		++tmp;
 	}
-	
-	while(size) {		
-		if ( tmp == 0 ) break;
 
-		tmp2 = *--str;
-		if ( ( tmp2 >= '0' ) && ( tmp2 <= '9' ) ) tmp3 = tmp2 - '0';
-		else if ( ( tmp2 >= 'a' ) && ( tmp2 <= 'f' ) ) tmp3 = tmp2 - ('a'-10);
-		else if ( ( tmp2 >= 'A' ) && ( tmp2 <= 'F' ) ) tmp3 = tmp2 - ('A'-10);
+	while(size) {
+		if ( tmp == 0 ) break;	
 		
+		tmp2 = *--str;
+		tmp3 = hashexdigit(tmp2) - 1;
+
 		if ( --tmp == 0 ) {
 			*lb++ = tmp3;
 			--size;
 			break;
 		} else {
 			tmp2 = *--str;
-			if ( ( tmp2 >= '0' ) && ( tmp2 <= '9' ) )
-				tmp2 = tmp2 - '0';
-			else if ( ( tmp2 >= 'a' ) && ( tmp2 <= 'f' ) )
-				tmp2 = tmp2 - ('a'-10);
-			else if ( ( tmp2 >= 'A' ) && ( tmp2 <= 'F' ) )
-				tmp2 = tmp2 - ('A'-10);
+			tmp2 = hashexdigit(tmp2) - 1;
 		}
 		
 		tmp2 <<= 4;
@@ -126,55 +130,42 @@ void * sah2b ( void * bin, char * str, unsigned char size ) {
 #endif
 	unsigned char tmp, tmp2, tmp3;
 	unsigned char * lb = bin;
-
+	
 	tmp = 0;
 	tmp3 = 0;
 
 	if( !str ) return 0;
-	
-	while( 1 ) {
+
+	while (1) {
 		tmp2 = *str;
-		if ( ( tmp2 >= '0' ) && ( tmp2 <= '9' ) ) break;
-		else if ( ( tmp2 >= 'a' ) && ( tmp2 <= 'f' ) ) break;
-		else if ( ( tmp2 >= 'A' ) && ( tmp2 <= 'F' ) ) break;
 		if( !tmp2 ) return (void*)0;
+		if ( hashexdigit(tmp2) ) break;
 		++str;
-		continue;
 	}
 	
-	for( tmp=0; tmp2; ++tmp, ++str ) {
+	for ( tmp=0; tmp2; ++tmp, ++str ) {
 		tmp2 = *str;
-		if ( ( tmp2 >= '0' ) && ( tmp2 <= '9' ) ) continue;
-		else if ( ( tmp2 >= 'a' ) && ( tmp2 <= 'f' ) ) continue;
-		else if ( ( tmp2 >= 'A' ) && ( tmp2 <= 'F' ) ) continue;
-		break;
+		if ( 0 == hashexdigit(tmp2) ) break;
 	}
 	
-	if(*str==0) bin = (void*)0;
+	if (*str==0) bin = (void*)0;
 	else bin = str;
 	
 	tmp3 = 0;
 
-	while(size&&tmp) {
+	while (size&&tmp) {
 		if ( tmp == 0 ) break;
 
 		tmp2 = *--str;
-		if ( ( tmp2 >= '0' ) && ( tmp2 <= '9' ) ) tmp3 = tmp2 - '0';
-		else if ( ( tmp2 >= 'a' ) && ( tmp2 <= 'f' ) ) tmp3 = tmp2 - ('a'-10);
-		else if ( ( tmp2 >= 'A' ) && ( tmp2 <= 'F' ) ) tmp3 = tmp2 - ('A'-10);
-		
+		tmp3 = hashexdigit(tmp2) - 1;
+	
 		if ( --tmp == 0 ) {
 			*lb++ = tmp3;
 			--size;
 			break;
 		} else {
 			tmp2 = *--str;
-			if ( ( tmp2 >= '0' ) && ( tmp2 <= '9' ) )
-				tmp2 = tmp2 - '0';
-			else if ( ( tmp2 >= 'a' ) && ( tmp2 <= 'f' ) )
-				tmp2 = tmp2 - ('a'-10);
-			else if ( ( tmp2 >= 'A' ) && ( tmp2 <= 'F' ) )
-				tmp2 = tmp2 - ('A'-10);
+			tmp2 = hashexdigit(tmp2) - 1;
 		}
 		
 		tmp2 <<= 4;
@@ -183,7 +174,7 @@ void * sah2b ( void * bin, char * str, unsigned char size ) {
 		--size;
 	}
 
-	while(size--) {
+	while (size--) {
 		*lb++ = 0;
 	}
 	return bin;
