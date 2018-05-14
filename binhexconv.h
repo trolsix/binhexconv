@@ -3,7 +3,7 @@
 #ifndef _BINHEXCONV_H
 #define _BINHEXCONV_H
 
-#define _HEXOP_VER 002
+#define _HEXOP_VER 003
 #define SIZCHAR 0
 
 #if SIZCHAR==0
