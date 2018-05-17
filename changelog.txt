@@ -1,4 +1,9 @@
 
+0.0.4
+- fixed bad types for leght str
+- small improved
+- add binhexconvconf.h to option
+
 0.0.3
 - fixed bad declaration
 - smaller code
