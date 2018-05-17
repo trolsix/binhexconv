@@ -17,8 +17,9 @@ Option _MERGE_IF_POSSIBILE changes macros to use
 STRASCHEXTOBIN function also for read ASCHEXTOBIN
 what should save some spaces but making
 conversion ASCHEXTOBIN slower
+option: 0 or 1
 */
-#define _MERGE_IF_POSSIBILE     1
+#define _MERGE_IF_POSSIBILE     0
 
 /*
 Possibile option for max bytes to convert binary:
