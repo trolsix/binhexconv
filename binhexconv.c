@@ -132,25 +132,21 @@ void * sah2b ( void * bin, const char * str, WORKSIZ size ) {
 	lstr = 0;
 	tmp3 = 0;
 
-	if( !str ) return 0;
+	if( !str ) return (void*)0;
 
 	while (1) {
 		tmp3 = *str;
 		if ( !tmp3 ) return (void*)0;
 		if ( (hashexdigit(tmp3) & 0x80) == 0 ) break;
 		++str;
-	}
-	
+	}	
 	for ( lstr=0; tmp3; ++lstr, ++str ) {
 		tmp3 = *str;
 		if ( hashexdigit(tmp3) & 0x80 ) break;
-	}
+	}	
 	
-	if (*str==0) bin = (void*)0;
-	else bin = str;
+	bin = (void*) str;
 	
-	tmp3 = 0;
-
 	while ( size && lstr-- ) {
 		tmp3 = hashexdigit(*--str);
 		--size;
@@ -182,12 +178,13 @@ void * sah2b ( void * bin, const char * str, WORKSIZ size ) {
 #if _USE_ASCHEXTOBIN && !(_MERGE_IF_POSSIBILE && _USE_STRASCHEXTOBIN)
 
 void ah2b ( void * bin, const char * str, WORKSIZ size ) {
-	unsigned char tmp3, *lb;
-
+	
 	union {
 		uint8_t tn[4];
 		uint32_t t32;
 	} ttt;
+	unsigned char tmp3;
+	unsigned char *lb;
 
 	if ( !str ) return;
 
@@ -212,17 +209,23 @@ void * sah2b ( void * bin, const char * str, WORKSIZ size ) {
 	} ttt;
 
 	if ( !str ) return (void*)0;
-
 	while (1) {
-		tmp3 = hashexdigit(*str++);
+		tmp3 = *str;
+		if ( !tmp3 ) return (void*)0;
+		if ( (hashexdigit(tmp3) & 0x80) == 0 ) break;
+		++str;
+	}
+	while (1) {
+		tmp3 = hashexdigit(*str);
 		if ( 0x80 & tmp3 ) break;
 		ttt.t32 = ttt.t32 << 4 | tmp3;
+		++str;
 	}
 
 	lb = (unsigned char*)bin;
 	for ( tmp3=0; tmp3<size; tmp3++ ) lb[tmp3] = ttt.tn[tmp3];
 
-	return str;
+	return (void*)str;
 }
 
 #endif
