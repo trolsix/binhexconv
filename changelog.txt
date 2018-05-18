@@ -1,4 +1,8 @@
 
+0.0.5
+- fixed bad pointer sometimes returned in sah2b
+- add forgotten find hex digit in one function
+
 0.0.4
 - fixed bad types for leght str
 - small improved
