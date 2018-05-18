@@ -5,7 +5,7 @@ Of course everything depends from compilator and architecture
 */
 
 #ifndef _BINHEXCONVCONF_H
-#define _BINHEXCONVCONF_H    1004
+#define _BINHEXCONVCONF_H    1005
 
 /* You can choose which function need 1, or not need 0 */
 #define _USE_BINTOASCHEX        1
