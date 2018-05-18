@@ -9,7 +9,7 @@ convert binary number (types) to hex ascii
   
 for little endian, (or big endian with correct length),
 code should work with constant size types like number,
-other way is risk impropper coversion
+other way is risk improper coversion
 
 ------------
 USAGE
