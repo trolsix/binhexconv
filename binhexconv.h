@@ -24,7 +24,7 @@ SOFTWARE.
 -----------------------------------------------*/
 
 #ifndef _BINHEXCONV_H
-#define _BINHEXCONV_H      1004
+#define _BINHEXCONV_H      1005
 
 #include "binhexconvconf.h"
 
