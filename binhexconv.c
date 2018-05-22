@@ -187,7 +187,7 @@ void ah2b ( void * bin, const char * str, WORKSIZ size ) {
 	unsigned char *lb;
 
 	if ( !str ) return;
-
+	ttt.t32 = 0;
 	while ( 0 != (tmp3 = *str++ ) ) {
 		tmp3 = hashexdigit(tmp3);
 		ttt.t32 = ttt.t32 << 4 | tmp3;
@@ -209,6 +209,7 @@ void * sah2b ( void * bin, const char * str, WORKSIZ size ) {
 	} ttt;
 
 	if ( !str ) return (void*)0;
+	ttt.t32 = 0;
 	while (1) {
 		tmp3 = *str;
 		if ( !tmp3 ) return (void*)0;
