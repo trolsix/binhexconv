@@ -7,9 +7,9 @@ convert binary number (types) to hex ascii
 - ascii hex -> binary
 - ascii stream -> binary
   
-for little endian, (or big endian with correct length),
-code should work with constant size types like number,
-other way is risk improper coversion
+for little endian, code should work with constant size types like number, other way is risk improper coversion
+
+big endian should work for correct length of ascii hex string and if _MAX_BYTES is more then 4
 
 ------------
 USAGE
